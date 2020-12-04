@@ -1,0 +1,127 @@
+#include <iostream>
+#include "../src/hash/hash.h"
+#include "../src/search/a_star.h"
+
+int main()
+{
+	//hash
+	uint8_t octects[32] = {'a', 'b', 'c'};
+
+	std::cout << algo::hash::murmur3(octects, 3) << std::endl;
+	std::cout << algo::hash::fnv0_32(octects, 3) << std::endl;
+	std::cout << algo::hash::fnv1_64(octects, 3) << std::endl;
+	std::cout << algo::hash::fnv1a_32(octects, 3) << std::endl;
+	std::cout << algo::hash::sdbm(octects, 3) << std::endl;
+	std::cout << algo::hash::djb2(octects, 3) << std::endl;
+
+	std::cout << std::endl << std::endl;
+
+
+	//a star algorithm
+	algo::search::grid<int> gr {
+		{ 1, 0, 1, 1, 1, 1, 0, 1, 1, 1 },
+		{ 1, 1, 1, 0, 1, 1, 1, 0, 1, 1 },
+		{ 1, 1, 1, 0, 1, 1, 0, 1, 0, 1 },
+		{ 0, 0, 1, 0, 1, 0, 0, 0, 0, 1 },
+		{ 1, 1, 1, 0, 1, 1, 1, 0, 1, 0 },
+		{ 1, 0, 1, 1, 1, 1, 0, 1, 0, 0 },
+		{ 1, 0, 0, 0, 0, 1, 0, 0, 0, 1 },
+		{ 1, 0, 1, 1, 1, 1, 0, 1, 1, 1 },
+		{ 1, 1, 1, 0, 0, 0, 1, 0, 0, 1 }
+	};
+
+	auto a_star = algo::search::a_star(gr);
+
+	algo::search::node src = std::make_pair(gr.size() - 1, gr[0].size() - 1);
+	algo::search::node dest = std::make_pair(0, 0);
+
+	std::vector<algo::search::node> p;
+
+	bool found = false;
+
+	try {
+		found = a_star.search_path(src, dest, p);
+	} catch(std::invalid_argument &e) {
+		std::cout << e.what() << std::endl;
+	}
+
+	if (!found)
+		std::cout << "Can't find a path" << std::endl;
+	else {
+		std::cout << "Nodes" << std::endl;
+		for (auto in : p)
+			std::cout << "y" << in.first << " -- x" << in.second << std::endl;
+
+		std::cout << std::endl << std::endl;
+
+		for (int i = 0; i < gr[0].size() - 1; i++) {
+			for (int j = 0; j < gr.size(); j++) {
+				for (auto in : p) {
+					if (in.first == j && in.second == i) {
+						std::cout << "\033[31;1mx\033[0m";
+						goto ex1;
+					}
+				}
+
+				std::cout << "\033[2mo\033[0m";
+				ex1: continue;
+			}
+			std::cout << std::endl;
+		}
+
+		std::cout << std::endl << std::endl;
+
+		for (int i = gr.size(); i >= 0; i--) {
+			for (int j = 0; j < gr[0].size() - 1; j++) {
+				for (auto in : p) {
+					if (in.first == j && in.second == i) {
+						std::cout << "\033[31;1mx\033[0m";
+						goto ex2;
+					}
+				}
+
+				std::cout << "\033[2mo\033[0m";
+				ex2: continue;
+			}
+			std::cout << std::endl;
+		}
+
+		std::cout << std::endl << std::endl;
+
+		for (int i = gr.size(); i >= 0; i--) {
+			for (int j = 0; j < gr[0].size() - 1; j++) {
+				for (auto in : p) {
+					if (in.first == j && in.second == i) {
+						std::cout << "\033[31;1mx\033[0m";
+						goto ex3;
+					}
+				}
+
+				std::cout << "\033[2mo\033[0m";
+				ex3: continue;
+			}
+			std::cout << std::endl;
+		}
+
+		std::cout << std::endl << std::endl;
+
+		for (int i = 0; i < gr.size(); i++) {
+			for (int j = 0; j < gr[0].size(); j++) {
+				for (auto in : p) {
+					if (in.first == i && in.second == j) {
+						std::cout << "\033[31;1mx\033[0m";
+						goto ex4;
+					}
+				}
+
+				std::cout << "\033[2mo\033[0m";
+				ex4: continue;
+			}
+
+			std::cout << std::endl;
+		}
+
+	}
+
+	return 0;
+}
