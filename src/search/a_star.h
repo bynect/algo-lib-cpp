@@ -12,13 +12,14 @@ namespace algo::search
 {
 	typedef std::pair<int, int> node;
 
+	template <typename T>
+	using grid = std::vector<std::vector<T>>;
+
+
 	typedef struct {
 		int parent_i, parent_j;
 		double f, g, h;
 	} cell;
-
-	template <typename T>
-	using grid = std::vector<std::vector<T>>;
 
 
 	class a_star {
@@ -33,7 +34,7 @@ namespace algo::search
 		grid<int> grid_;
 		int row_, col_;
 
-		std::vector<node> trace_path(grid<cell> details, node dest);
+		std::vector<node> trace_path(grid<cell> &details, node dest);
 
 		bool
 		is_valid(int row, int col)

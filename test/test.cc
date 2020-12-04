@@ -35,12 +35,12 @@ int main()
 	algo::search::node src = std::make_pair(gr.size() - 1, gr[0].size() - 1);
 	algo::search::node dest = std::make_pair(0, 0);
 
-	std::vector<algo::search::node> p;
+	std::vector<algo::search::node> path;
 
 	bool found = false;
 
 	try {
-		found = a_star.search_path(src, dest, p);
+		found = a_star.search_path(src, dest, path);
 	} catch(std::invalid_argument &e) {
 		std::cout << e.what() << std::endl;
 	}
@@ -49,15 +49,15 @@ int main()
 		std::cout << "Can't find a path" << std::endl;
 	else {
 		std::cout << "Nodes" << std::endl;
-		for (auto in : p)
-			std::cout << "y" << in.first << " -- x" << in.second << std::endl;
+		for (auto cell : path)
+			std::cout << "y" << cell.first << " -- x" << cell.second << std::endl;
 
 		std::cout << std::endl << std::endl;
 
 		for (int i = 0; i < gr[0].size() - 1; i++) {
 			for (int j = 0; j < gr.size(); j++) {
-				for (auto in : p) {
-					if (in.first == j && in.second == i) {
+				for (auto cell : path) {
+					if (cell.first == j && cell.second == i) {
 						std::cout << "\033[31;1mx\033[0m";
 						goto ex1;
 					}
@@ -73,8 +73,8 @@ int main()
 
 		for (int i = gr.size(); i >= 0; i--) {
 			for (int j = 0; j < gr[0].size() - 1; j++) {
-				for (auto in : p) {
-					if (in.first == j && in.second == i) {
+				for (auto cell : path) {
+					if (cell.first == j && cell.second == i) {
 						std::cout << "\033[31;1mx\033[0m";
 						goto ex2;
 					}
@@ -90,8 +90,8 @@ int main()
 
 		for (int i = gr.size(); i >= 0; i--) {
 			for (int j = 0; j < gr[0].size() - 1; j++) {
-				for (auto in : p) {
-					if (in.first == j && in.second == i) {
+				for (auto cell : path) {
+					if (cell.first == j && cell.second == i) {
 						std::cout << "\033[31;1mx\033[0m";
 						goto ex3;
 					}
@@ -107,8 +107,8 @@ int main()
 
 		for (int i = 0; i < gr.size(); i++) {
 			for (int j = 0; j < gr[0].size(); j++) {
-				for (auto in : p) {
-					if (in.first == i && in.second == j) {
+				for (auto cell : path) {
+					if (cell.first == i && cell.second == j) {
 						std::cout << "\033[31;1mx\033[0m";
 						goto ex4;
 					}

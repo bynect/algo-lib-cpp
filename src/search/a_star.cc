@@ -8,7 +8,8 @@
 
 
 bool
-algo::search::a_star::search_path(node src, node dest, std::vector<algo::search::node> &path)
+algo::search::a_star::search_path(node src, node dest,
+	std::vector<algo::search::node> &path)
 {
 	if (!is_valid(src.first, src.second))
 		throw std::invalid_argument("Invalid source node.");
@@ -69,11 +70,7 @@ algo::search::a_star::search_path(node src, node dest, std::vector<algo::search:
 
 				algo::search::grid<cell> vec;
 				for (int i = 0; i < row_; i++) {
-					std::vector<cell> elem;
-					for (int j = 0; j < col_; j++) {
-						elem.push_back(details[i][j]);
-					}
-					vec.push_back(elem);
+					vec.push_back(std::vector<cell>(details[i], details[i] + col_));
 				}
 
 				found = true;
@@ -103,11 +100,7 @@ algo::search::a_star::search_path(node src, node dest, std::vector<algo::search:
 
 				algo::search::grid<cell> vec;
 				for (int i = 0; i < row_; i++) {
-					std::vector<cell> elem;
-					for (int j = 0; j < col_; j++) {
-						elem.push_back(details[i][j]);
-					}
-					vec.push_back(elem);
+					vec.push_back(std::vector<cell>(details[i], details[i] + col_));
 				}
 
 				found = true;
@@ -137,11 +130,7 @@ algo::search::a_star::search_path(node src, node dest, std::vector<algo::search:
 
 				algo::search::grid<cell> vec;
 				for (int i = 0; i < row_; i++) {
-					std::vector<cell> elem;
-					for (int j = 0; j < col_; j++) {
-						elem.push_back(details[i][j]);
-					}
-					vec.push_back(elem);
+					vec.push_back(std::vector<cell>(details[i], details[i] + col_));
 				}
 
 				found = true;
@@ -171,11 +160,7 @@ algo::search::a_star::search_path(node src, node dest, std::vector<algo::search:
 
 				algo::search::grid<cell> vec;
 				for (int i = 0; i < row_; i++) {
-					std::vector<cell> elem;
-					for (int j = 0; j < col_; j++) {
-						elem.push_back(details[i][j]);
-					}
-					vec.push_back(elem);
+					vec.push_back(std::vector<cell>(details[i], details[i] + col_));
 				}
 
 				found = true;
@@ -203,13 +188,10 @@ algo::search::a_star::search_path(node src, node dest, std::vector<algo::search:
 				details[i - 1][j + 1].parent_i = i;
 				details[i - 1][j + 1].parent_j = j;
 
+
 				algo::search::grid<cell> vec;
 				for (int i = 0; i < row_; i++) {
-					std::vector<cell> elem;
-					for (int j = 0; j < col_; j++) {
-						elem.push_back(details[i][j]);
-					}
-					vec.push_back(elem);
+					vec.push_back(std::vector<cell>(details[i], details[i] + col_));
 				}
 
 				found = true;
@@ -239,11 +221,7 @@ algo::search::a_star::search_path(node src, node dest, std::vector<algo::search:
 
 				algo::search::grid<cell> vec;
 				for (int i = 0; i < row_; i++) {
-					std::vector<cell> elem;
-					for (int j = 0; j < col_; j++) {
-						elem.push_back(details[i][j]);
-					}
-					vec.push_back(elem);
+					vec.push_back(std::vector<cell>(details[i], details[i] + col_));
 				}
 
 				found = true;
@@ -275,11 +253,7 @@ algo::search::a_star::search_path(node src, node dest, std::vector<algo::search:
 
 				algo::search::grid<cell> vec;
 				for (int i = 0; i < row_; i++) {
-					std::vector<cell> elem;
-					for (int j = 0; j < col_; j++) {
-						elem.push_back(details[i][j]);
-					}
-					vec.push_back(elem);
+					vec.push_back(std::vector<cell>(details[i], details[i] + col_));
 				}
 
 				found = true;
@@ -309,11 +283,7 @@ algo::search::a_star::search_path(node src, node dest, std::vector<algo::search:
 
 				algo::search::grid<cell> vec;
 				for (int i = 0; i < row_; i++) {
-					std::vector<cell> elem;
-					for (int j = 0; j < col_; j++) {
-						elem.push_back(details[i][j]);
-					}
-					vec.push_back(elem);
+					vec.push_back(std::vector<cell>(details[i], details[i] + col_));
 				}
 
 				found = true;
@@ -342,7 +312,7 @@ algo::search::a_star::search_path(node src, node dest, std::vector<algo::search:
 
 
 std::vector<algo::search::node>
-algo::search::a_star::trace_path(algo::search::grid<algo::search::cell> details,
+algo::search::a_star::trace_path(algo::search::grid<algo::search::cell> &details,
 	algo::search::node dest)
 {
 	int row = dest.first;
