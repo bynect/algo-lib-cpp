@@ -13,6 +13,8 @@ int main()
 	std::cout << algo::hash::fnv1a_32(octects, 3) << std::endl;
 	std::cout << algo::hash::sdbm(octects, 3) << std::endl;
 	std::cout << algo::hash::djb2(octects, 3) << std::endl;
+	std::cout << algo::hash::crc32b(octects, 3) << std::endl;
+	std::cout << algo::hash::xcrc32(octects, 3) << std::endl;
 
 	std::cout << std::endl << std::endl;
 

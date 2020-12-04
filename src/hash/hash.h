@@ -35,6 +35,12 @@ namespace algo::hash
 
 	//murmur
 	uint32_t murmur3(const uint8_t *octects, int len, uint32_t seed = 0);
+
+
+	//crc32
+	uint32_t crc32b(const uint8_t *octects, int len);
+
+	uint32_t xcrc32(const uint8_t *octects, int len);
 }
 
 
