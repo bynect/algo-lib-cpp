@@ -33,7 +33,7 @@ algorithm_a(int n, const uint32_t *u, const uint32_t *v, uint32_t *w)
 
 
 static int
-cmp(int u_len, const uint32_t *u, int v_len, const uint32_t *v)
+bigint_cmp(int u_len, const uint32_t *u, int v_len, const uint32_t *v)
 {
 	int i;
 
@@ -58,7 +58,7 @@ algorithm_s(int n, const uint32_t *u, const uint32_t *v, uint32_t *w)
 	uint32_t diff_a, diff_b;
 	int j;
 
-	assert(cmp(n, u, n, v) >= 0 && "Subtraction result would be negative!");
+	assert(bigint_cmp(n, u, n, v) >= 0 && "Subtraction result would be negative!");
 
 	borrow = false;
 
@@ -463,8 +463,8 @@ bigint_add(int x_len, const uint32_t *x, int y_len, const uint32_t *y)
 static algo::bigint::BigInt
 bigint_sub(int x_len, const uint32_t *x, int y_len, const uint32_t *y)
 {
-	if (cmp(x_len, x, y_len, y) < 0)
-		return algo::bigint::BigInt(bigint_sub(y_len, y, x_len, x).internal_repr(), true);
+	if (bigint_cmp(x_len, x, y_len, y) < 0)
+		return algo::bigint::BigInt(bigint_sub(y_len, y, x_len, x).representation(), true);
 
 	uint32_t w[x_len];
 	int i;
@@ -508,7 +508,7 @@ algo::bigint::BigInt::from_string(const char *string)
 	int n = std::strlen(string);
 
 	uint32_t u[n / 9 + 1];
-	bool negative = false;
+	negative = false;
 	int u_length;
 
 	assert(n > 0 && "Empty string is not a valid number.");
@@ -537,7 +537,7 @@ algo::bigint::BigInt::to_string()
 		arr[i] = repr[i];
 	}
 
-	if (negative) {
+	if (negative && repr.size() > 0 && repr[0] != 0) {
 		buff[0] = '-';
 		bigint_to_string(repr.size(), arr, buff + 1);
 	} else {
@@ -563,7 +563,7 @@ algo::bigint::BigInt::operator+(const BigInt &op)
 	}
 
 	if (negative && op.negative) {
-		return algo::bigint::BigInt(bigint_add(repr.size(), x, op.repr.size(), y).internal_repr(), true);
+		return algo::bigint::BigInt(bigint_add(repr.size(), x, op.repr.size(), y).representation(), true);
 	}
 
 	if (negative) {
@@ -602,7 +602,7 @@ algo::bigint::BigInt::operator-(const BigInt &op)
 
 	if (negative) {
 		assert(!op.negative);
-		return algo::bigint::BigInt(bigint_add(repr.size(), x, op.repr.size(), y).internal_repr(), true);
+		return algo::bigint::BigInt(bigint_add(repr.size(), x, op.repr.size(), y).representation(), true);
 	}
 
 	if (op.negative) {
@@ -656,11 +656,11 @@ algo::bigint::BigInt::operator/(const BigInt &op)
 	}
 
 	if (repr.size() < op.repr.size()) {
-		throw std::invalid_argument("Invalid division");
+		return algo::bigint::BigInt(std::vector<uint32_t>(), false);
 	}
 
 	return algo::bigint::BigInt(
-		bigint_divrem(repr.size(), x, op.repr.size(), y, false).internal_repr(),
+		bigint_divrem(repr.size(), x, op.repr.size(), y, false).representation(),
 		negative ^ op.negative
 	);
 }
@@ -684,7 +684,7 @@ algo::bigint::BigInt::operator%(const BigInt &op)
 		return algo::bigint::BigInt(repr, negative);
 	} else {
 		return algo::bigint::BigInt(
-			bigint_divrem(repr.size(), x, op.repr.size(), y, true).internal_repr(),
+			bigint_divrem(repr.size(), x, op.repr.size(), y, true).representation(),
 			negative
 		);
 	}
@@ -694,17 +694,31 @@ algo::bigint::BigInt::operator%(const BigInt &op)
 bool
 algo::bigint::BigInt::operator==(const BigInt &op)
 {
-	uint32_t buff1[repr.size()];
-	uint32_t buff2[op.repr.size()];
+	uint32_t x[repr.size()];
+	uint32_t y[op.repr.size()];
 
 	for (int i = 0; i < op.repr.size(); i++) {
-		buff2[i] = op.repr[i];
+		y[i] = op.repr[i];
 	}
 
 	for (int i = 0; i < repr.size(); i++) {
-		buff1[i] = repr[i];
+		x[i] = repr[i];
 	}
 
-	auto diff = cmp(repr.size(), buff1, op.repr.size(), buff2);
-	return diff == 0;
+	if (negative != op.negative) {
+		return false;
+	}
+
+	if (negative) {
+		return bigint_cmp(op.repr.size(), y, repr.size(), x) == 0;
+	}
+
+	return bigint_cmp(repr.size(), x, op.repr.size(), y) == 0;
+}
+
+
+bool
+algo::bigint::BigInt::operator!=(const BigInt &op)
+{
+	return !(*this == op);
 }

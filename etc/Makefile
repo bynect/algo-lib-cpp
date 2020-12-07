@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-Wall -Wextra -g
+CFLAGS=-Wall -g
 
 SRC=$(shell find src -name '*.cc')
 OBJ=$(SRC:.cc=.o)

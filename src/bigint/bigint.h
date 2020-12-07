@@ -35,22 +35,32 @@ namespace algo::bigint
 		BigInt operator*(const BigInt &op);
 		BigInt operator/(const BigInt &op);
 		BigInt operator%(const BigInt &op);
+
 		bool operator==(const BigInt &op);
+		bool operator!=(const BigInt &op);
 
 
 		std::string to_string();
 
 		bool
-		empty()
+		is_empty()
 		{
 			return repr.size() == 0;
 		}
 
+
+		bool
+		is_negative()
+		{
+			return negative;
+		}
+
 		const std::vector<uint32_t>
-		internal_repr()
+		representation()
 		{
 			return repr;
 		}
+
 
 	private:
 		std::vector<uint32_t> repr;

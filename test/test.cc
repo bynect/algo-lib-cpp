@@ -132,8 +132,8 @@ main(int argc, char **argv)
 
 
 	//bigint
-	auto int1 = algo::bigint::BigInt("100000000000");
-	auto int2 = algo::bigint::BigInt("100000000");
+	auto int1 = algo::bigint::BigInt("-100000000000");
+	auto int2 = algo::bigint::BigInt("-100000000000");
 
 	if (int1 == int2) std::cout << "Equal" << std::endl;
 	else std::cout << "Not equal" << std::endl;
