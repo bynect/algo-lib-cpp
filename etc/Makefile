@@ -1,3 +1,6 @@
+CC=g++
+CFLAGS=-Wall -Wextra -g
+
 SRC=$(shell find src -name '*.cc')
 OBJ=$(SRC:.cc=.o)
 
@@ -9,13 +12,13 @@ all: $(LIB) $(TEST)
 
 $(LIB): $(OBJ)
 	mkdir -p $(OUTDIR)
-	g++ $^ -o $@ -shared
+	$(CC) $(CFLAGS) $^ -o $@ -shared
 
 %.o: %.cc
-	g++ -c $< -o $@ -shared -fpic
+	$(CC) $(CFLAGS) -c $< -o $@ -shared -fpic
 
 $(TEST): $(OBJ)
-	g++ $^ test/test.cc -o $@
+	$(CC) $(CFLAGS) $^ test/test.cc -o $@
 
 .PHONY: clean
 clean:

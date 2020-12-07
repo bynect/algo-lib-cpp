@@ -1,5 +1,5 @@
-#ifndef ALGO_UTIL_H
-#define ALGO_UTIL_H
+#ifndef ALGO_A_STAR_H
+#define ALGO_A_STAR_H
 
 
 #include <utility>
@@ -22,9 +22,9 @@ namespace algo::search
 	} cell;
 
 
-	class a_star {
+	class AStar {
 	public:
-		a_star(grid<int> grid_)
+		AStar(grid<int> grid_)
 		: grid_(grid_), row_(grid_.size()), col_(grid_[0].size())
 		{}
 

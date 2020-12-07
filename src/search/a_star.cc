@@ -8,7 +8,7 @@
 
 
 bool
-algo::search::a_star::search_path(node src, node dest,
+algo::search::AStar::search_path(node src, node dest,
 	std::vector<algo::search::node> &path)
 {
 	if (!is_valid(src.first, src.second))
@@ -312,7 +312,7 @@ algo::search::a_star::search_path(node src, node dest,
 
 
 std::vector<algo::search::node>
-algo::search::a_star::trace_path(algo::search::grid<algo::search::cell> &details,
+algo::search::AStar::trace_path(algo::search::grid<algo::search::cell> &details,
 	algo::search::node dest)
 {
 	int row = dest.first;

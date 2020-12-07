@@ -1,11 +1,14 @@
 #include <iostream>
 #include "../src/hash/hash.h"
 #include "../src/search/a_star.h"
+#include "../src/bigint/bigint.h"
 
-int main()
+
+int
+main(int argc, char **argv)
 {
 	//hash
-	uint8_t octects[32] = {'a', 'b', 'c'};
+	uint8_t octects[] = {'a', 'b', 'c'};
 
 	std::cout << algo::hash::murmur3(octects, 3) << std::endl;
 	std::cout << algo::hash::fnv0_32(octects, 3) << std::endl;
@@ -32,7 +35,7 @@ int main()
 		{ 1, 1, 1, 0, 0, 0, 1, 0, 0, 1 }
 	};
 
-	auto a_star = algo::search::a_star(gr);
+	auto a_star = algo::search::AStar(gr);
 
 	algo::search::node src = std::make_pair(gr.size() - 1, gr[0].size() - 1);
 	algo::search::node dest = std::make_pair(0, 0);
@@ -124,6 +127,26 @@ int main()
 		}
 
 	}
+
+	std::cout << std::endl << std::endl;
+
+
+	//bigint
+	auto int1 = algo::bigint::BigInt("100000000000");
+	auto int2 = algo::bigint::BigInt("100000000");
+
+	if (int1 == int2) std::cout << "Equal" << std::endl;
+	else std::cout << "Not equal" << std::endl;
+
+	std::cout << (int1 + int2).to_string() << std::endl;
+
+	std::cout << (int1 - int2).to_string() << std::endl;
+
+	std::cout << (int1 * int2).to_string() << std::endl;
+
+	std::cout << (int1 / int2).to_string() << std::endl;
+
+	std::cout << (int1 % int2).to_string() << std::endl;
 
 	return 0;
 }
